@@ -1,0 +1,13 @@
+METRO INTERNATIONAL DIAGNOSTICS
+PATIENT LAB SUMMARY
+Patient: Arthur Dent
+ID: MID-100239
+
+LABORATORY FINDINGS (SI / METRIC UNITS)
+Fast Glucose: 8.2 mmol/L (3.9 - 5.5)
+Hemoglobin: 115 g/L (130 - 170)
+Serum Creatinine: 160 umol/L (53 - 106)
+Platelet Count: 180000
+
+Remarks: Platelet count printed without local reference range; Glucose and Hb in SI units.
+Verified by Dr. Thorne

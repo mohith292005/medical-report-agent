@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedExplain AI — Medical Lab Report Explanation Agent</title>
+    <meta name="description" content="AI-powered medical report explanation, deterministic biomarker flags, panic threshold checks, and plain-language patient insights with 3D visualization.">
+
+    <!-- Fonts: Plus Jakarta Sans & Outfit for modern luxury medical aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Three.js for interactive 3D WebGL Visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/frontend/css/styles.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
+</head>
+<body>
+    <!-- ─── 3D Ambient WebGL Canvas ─── -->
+    <canvas id="ambient3DCanvas" class="ambient-canvas"></canvas>
+
+    <!-- ─── Soft Ethereal Mesh Backdrop ─── -->
+    <div class="mesh-backdrop">
+        <div class="ambient-glow glow-top-left"></div>
+        <div class="ambient-glow glow-top-right"></div>
+        <div class="ambient-glow glow-bottom"></div>
+        <div class="flowing-curve curve-1"></div>
+        <div class="flowing-curve curve-2"></div>
+    </div>
+
+    <!-- ─── Global App Layout ─── -->
+    <div class="app-layout">
+
+        <!-- ─── Left Dock / Sidebar ─── -->
+        <aside class="left-dock" id="leftDock" aria-label="Sidebar Navigation">
+            <div class="dock-inner">
+                <!-- Top New Report Action Button -->
+                <button class="dock-btn dock-btn-primary" id="dockNewChatBtn" title="Upload New Report" aria-label="New Report">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+
+                <!-- Navigation Icons -->
+                <nav class="dock-nav">
+                    <button class="dock-btn active" id="dockNavHome" title="Home Hub" data-scroll="heroSection">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </button>
+
+                    <button class="dock-btn" id="dockNavExplore" title="Lab Report Analyzer" data-scroll="analyzerSection">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                        </svg>
+                    </button>
+
+                    <button class="dock-btn" id="dockNavDashboard" title="Biomarker Flags & Metrics" data-scroll="resultsSection">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </button>
+
+                    <button class="dock-btn" id="dockNavChat" title="Medical Assistant Chatbot" data-scroll="chatSection">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </button>
+
+                    <button class="dock-btn" id="dockNavGuide" title="Doctor Questions & Lifestyle" data-scroll="guideSection">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
+                    </button>
+                </nav>
+
+                <!-- Bottom Medical Logo -->
+                <div class="dock-bottom">
+                    <button class="dock-logo-btn" id="dockLogoBtn" title="MedExplain AI • Online Guardrails Active">
+                        <span class="logo-symbol">✚</span>
+                        <span class="status-indicator-dot"></span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ─── Main Content Canvas ─── -->
+        <main class="main-viewport" id="mainViewport">
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 SECTION 1: THE HERO HUB (Exact Architecture from Reference)
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="hero-stage-section" id="heroSection">
+                <div class="glass-card main-glass-container" id="mainGlassContainer">
+
+                    <!-- ─── Top Header Bar ─── -->
+                    <header class="card-top-bar">
+                        <!-- Left: Model Info -->
+                        <div class="model-picker-wrapper">
+                            <button class="model-select-btn" id="modelSelectBtn" aria-haspopup="true">
+                                <span class="snowflake-icon">❄️</span>
+                                <span class="model-name" id="currentModelLabel">MedExplain AI v2.6</span>
+                            </button>
+                        </div>
+
+                        <!-- Center Title -->
+                        <div class="center-brand">
+                            <span class="brand-title">Daily Health Brief</span>
+                        </div>
+
+                        <!-- Right: Print & Summary Action -->
+                        <div class="header-right-actions">
+                            <button class="upgrade-pill-btn print-summary-btn" id="printReportBtn" title="Print or save verified explanation">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                                    <rect x="6" y="14" width="12" height="8"></rect>
+                                </svg>
+                                <span>Export Summary</span>
+                            </button>
+                        </div>
+                    </header>
+
+                    <!-- ─── Hero Content Area ─── -->
+                    <div class="hero-content-row">
+                        <!-- Left Hero Greeting -->
+                        <div class="hero-text-block">
+                            <h1 class="hero-title">
+                                <span class="title-greeting">Hi there, </span><span class="title-bold">Ready to Decode</span><br>
+                                <span class="title-bold">Your Lab Report?</span>
+                            </h1>
+                            <p class="hero-subtext">
+                                Upload your blood tests, explore abnormal biomarkers in plain language, and ask intelligent questions with complete confidence.
+                            </p>
+                        </div>
+
+                        <!-- Right: 3D Robot Mascot & Speech Bubble -->
+                        <div class="robot-mascot-container" id="robotMascotContainer">
+                            <!-- Speech Bubble -->
+                            <div class="speech-bubble" id="speechBubble">
+                                <div class="bubble-greeting">Hey there! 👋</div>
+                                <div class="bubble-sub">Need a health breakdown?</div>
+                                <div class="bubble-tail"></div>
+                            </div>
+
+                            <!-- Interactive 3D Robot Stage -->
+                            <div class="mascot-3d-stage" id="mascotStage">
+                                <img src="/frontend/images/robot_assistant.jpg" alt="3D Medical Robot Assistant" class="robot-mascot-image" id="robotImage">
+                                <div class="robot-shadow"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ─── The 3 Medical Action Cards ─── -->
+                    <div class="cards-grid-row">
+
+                        <!-- Card 1: Upload Lab Report -->
+                        <div class="interactive-card card-fast-start" id="cardUploadReport" tabindex="0">
+                            <div class="card-glare"></div>
+                            <div class="card-icon-box icon-yellow-stack">
+                                <!-- Medical Report Stack Icon -->
+                                <svg width="34" height="34" viewBox="0 0 36 36" fill="none">
+                                    <path d="M18 4L32 11L18 18L4 11L18 4Z" fill="#FFA502" />
+                                    <path d="M4 14.5L18 21.5L32 14.5" stroke="#FF7F00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M4 19.5L18 26.5L32 19.5" stroke="#FF5722" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M4 24.5L18 31.5L32 24.5" stroke="#D32F2F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-heading">Upload Lab Report</h3>
+                                <p class="card-description">
+                                    Drop your blood test, lipid panel, or metabolic lab PDF, image, or pasted text to extract numbers.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-tag">Analyze Report</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Abnormal Biomarker Flags -->
+                        <div class="interactive-card card-collaborate" id="cardBiomarkerFlags" tabindex="0">
+                            <div class="card-glare"></div>
+                            <div class="card-icon-box icon-slack-clover">
+                                <!-- Biomarker Cross / Medical Target Icon -->
+                                <svg width="34" height="34" viewBox="0 0 36 36" fill="none">
+                                    <rect x="6" y="14" width="10" height="4" rx="2" fill="#E01E5A"/>
+                                    <circle cx="20" cy="8" r="3" fill="#E01E5A"/>
+                                    <rect x="18" y="6" width="4" height="10" rx="2" fill="#36C5F0"/>
+                                    <circle cx="28" cy="16" r="3" fill="#36C5F0"/>
+                                    <rect x="20" y="18" width="10" height="4" rx="2" fill="#2EB67D"/>
+                                    <circle cx="16" cy="28" r="3" fill="#2EB67D"/>
+                                    <rect x="14" y="20" width="4" height="10" rx="2" fill="#ECB22E"/>
+                                    <circle cx="8" cy="20" r="3" fill="#ECB22E"/>
+                                </svg>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-heading">Abnormal Biomarkers</h3>
+                                <p class="card-description">
+                                    Review deterministic HIGH and LOW flags, clinical reference intervals, and panic-level critical checks.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-tag">Verified Flags</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Doctor Questions & Lifestyle Suggestions -->
+                        <div class="interactive-card card-planning" id="cardDoctorLifestyle" tabindex="0">
+                            <div class="card-glare"></div>
+                            <div class="card-icon-box icon-calendar">
+                                <!-- Stethoscope / Consultation Calendar Icon -->
+                                <svg width="34" height="34" viewBox="0 0 36 36" fill="none">
+                                    <rect x="4" y="6" width="28" height="26" rx="6" fill="#4285F4"/>
+                                    <rect x="4" y="6" width="28" height="9" rx="4" fill="#1A73E8"/>
+                                    <rect x="10" y="3" width="3" height="6" rx="1.5" fill="#34A853"/>
+                                    <rect x="23" y="3" width="3" height="6" rx="1.5" fill="#EA4335"/>
+                                    <rect x="8" y="18" width="20" height="11" rx="3" fill="white"/>
+                                    <path d="M14 23.5H22M18 19.5V27.5" stroke="#1A73E8" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-heading">Doctor Discussion & Tips</h3>
+                                <p class="card-description">
+                                    Ask the assistant what is going on, explore evidence-based nutrition tips, and prepare physician questions.
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="card-tag">Ask Assistant</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ─── Bottom Floating Prompt Bar ─── -->
+                    <div class="prompt-bar-section">
+                        <!-- Top Metadata Row -->
+                        <div class="prompt-meta-row">
+                            <div class="guardrail-indicator">
+                                <span class="sparkle-mini">✨</span>
+                                <span>Code Decides Numbers • LLM Explains Findings</span>
+                            </div>
+                            <div class="powered-by-tag">
+                                <span class="snowflake-mini">🛡️</span>
+                                <span>Deterministic Safety Active</span>
+                            </div>
+                        </div>
+
+                        <!-- Main Prompt Capsule -->
+                        <div class="prompt-capsule-box" id="promptCapsuleBox">
+                            <!-- Left + Action / Sample Menu Button -->
+                            <div class="prompt-left-menu-container">
+                                <button class="prompt-attach-btn" id="promptAttachBtn" title="Load Sample or Attach Report" aria-label="Attachment Menu">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+                                <!-- Attach Dropdown Menu -->
+                                <div class="attach-dropdown" id="attachDropdown">
+                                    <div class="attach-item" id="attachUploadAction">
+                                        <span class="attach-icon">📄</span>
+                                        <span>Upload Report (PDF / Image / TXT)</span>
+                                    </div>
+                                    <div class="attach-item" id="attachSampleAnemia">
+                                        <span class="attach-icon">🩸</span>
+                                        <span>Load Anemia CBC Panel</span>
+                                    </div>
+                                    <div class="attach-item" id="attachSamplePotassium">
+                                        <span class="attach-icon">⚠️</span>
+                                        <span>Load Critical Potassium Lab</span>
+                                    </div>
+                                    <div class="attach-item" id="attachSampleLipid">
+                                        <span class="attach-icon">🫀</span>
+                                        <span>Load Lipid Profile (Cholesterol)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Input Text Area -->
+                            <div class="prompt-input-area">
+                                <input type="text" id="promptInput" class="prompt-input-field" placeholder="Ask anything about your report (e.g. 'What's going on?' or 'What should I ask my doctor?')" autocomplete="off">
+                            </div>
+
+                            <!-- Right Voice & Submit Controls -->
+                            <div class="prompt-right-controls">
+                                <button class="prompt-mic-btn" id="micBtn" title="Speech to text dictation" aria-label="Microphone">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                                    </svg>
+                                </button>
+
+                                <button class="prompt-send-pill" id="sendBtn" title="Send message or analyze" aria-label="Send">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Medical Suggestion Pills -->
+                        <div class="prompt-suggestions-row">
+                            <button class="pill-chip chip-insight" data-prompt="What is going on with my report? Give me a complete summary.">
+                                <span class="chip-icon">💡</span>
+                                <span>What's going on?</span>
+                            </button>
+
+                            <button class="pill-chip chip-lifestyle" data-prompt="What dietary and lifestyle suggestions do you recommend for these lab results?">
+                                <span class="chip-icon">🥗</span>
+                                <span>Lifestyle Suggestions</span>
+                            </button>
+
+                            <button class="pill-chip chip-doctor" data-prompt="What questions should I ask my doctor about these abnormal biomarkers?">
+                                <span class="chip-icon">🩺</span>
+                                <span>Doctor Questions</span>
+                            </button>
+
+                            <button class="pill-chip chip-abnormal" data-prompt="Explain all my abnormal test values and what they mean in plain language.">
+                                <span class="chip-icon">📊</span>
+                                <span>Explain Abnormal Values</span>
+                            </button>
+
+                            <button class="pill-chip chip-critical" data-prompt="Are there any critical or urgent panic-level values in this report?">
+                                <span class="chip-icon">⚠️</span>
+                                <span>Critical Alerts Check</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 SECTION 2: 3D BIOMARKER VISUALIZER & LAB REPORT ANALYZER
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="content-section" id="analyzerSection">
+                <div class="section-header">
+                    <span class="section-badge">🧬 Step 1 • Lab Intake & 3D Intelligence</span>
+                    <h2 class="section-title">Upload & Analyze Your Laboratory Report</h2>
+                    <p class="section-subtitle">
+                        Supports PDF lab documents, scanned photos (OCR), or pasted raw text. Values are flagged using deterministic clinical ranges.
+                    </p>
+                </div>
+
+                <div class="analyzer-grid">
+                    <!-- Left: Interactive Upload Card -->
+                    <div class="glass-card analyzer-card">
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" id="tabUploadBtn">📄 File Upload</button>
+                            <button class="tab-btn" id="tabPasteBtn">✍️ Paste Text</button>
+                            <button class="tab-btn" id="tabSamplesBtn">🧪 Sample Presets</button>
+                        </div>
+
+                        <!-- Tab 1: Upload Pane -->
+                        <div class="tab-pane active" id="paneUpload">
+                            <div class="upload-dropzone" id="dropzone">
+                                <div class="dropzone-glow"></div>
+                                <div class="dropzone-icon">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="12" y1="18" x2="12" y2="12"></line>
+                                        <line x1="9" y1="15" x2="12" y2="12"></line>
+                                        <line x1="15" y1="15" x2="12" y2="12"></line>
+                                    </svg>
+                                </div>
+                                <h4 class="dropzone-title">Drag & drop your lab report here</h4>
+                                <p class="dropzone-sub">PDF documents, blood test images (.png, .jpg), or .txt files</p>
+                                <button class="btn btn-outline" id="browseFileBtn">Browse Files</button>
+                                <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,.txt" style="display:none">
+                                <div class="selected-file-badge" id="selectedFileBadge" style="display:none">
+                                    <span class="file-name" id="selectedFileName">report.pdf</span>
+                                    <button class="remove-file-btn" id="removeFileBtn" title="Remove file">×</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 2: Paste Text Pane -->
+                        <div class="tab-pane" id="panePaste">
+                            <textarea id="pasteTextArea" class="paste-textarea" rows="8" placeholder="Paste your laboratory test results here...&#10;&#10;Example:&#10;Hemoglobin: 10.2 g/dL (Ref: 13.0 - 17.0)&#10;Potassium: 6.8 mmol/L (Ref: 3.5 - 5.0)&#10;Fasting Glucose: 110 mg/dL (Ref: 70 - 99)"></textarea>
+                        </div>
+
+                        <!-- Tab 3: Quick Samples Pane -->
+                        <div class="tab-pane" id="paneSamples">
+                            <div class="samples-grid">
+                                <div class="sample-chip" data-sample="anemia">
+                                    <span class="sample-icon">🩸</span>
+                                    <div class="sample-info">
+                                        <div class="sample-name">Anemia CBC Panel</div>
+                                        <div class="sample-desc">Low hemoglobin, hematocrit & ferritin</div>
+                                    </div>
+                                </div>
+
+                                <div class="sample-chip" data-sample="critical">
+                                    <span class="sample-icon">⚠️</span>
+                                    <div class="sample-info">
+                                        <div class="sample-name">Critical Potassium</div>
+                                        <div class="sample-desc">Severe elevation (6.8 mmol/L) panic trigger</div>
+                                    </div>
+                                </div>
+
+                                <div class="sample-chip" data-sample="lipid">
+                                    <span class="sample-icon">🫀</span>
+                                    <div class="sample-info">
+                                        <div class="sample-name">Lipid Profile</div>
+                                        <div class="sample-desc">Elevated total cholesterol & LDL</div>
+                                    </div>
+                                </div>
+
+                                <div class="sample-chip" data-sample="normal">
+                                    <span class="sample-icon">✅</span>
+                                    <div class="sample-info">
+                                        <div class="sample-name">Normal CBC</div>
+                                        <div class="sample-desc">All values seated within standard limits</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Language & Action Controls -->
+                        <div class="analyzer-action-bar">
+                            <div class="lang-selector-group">
+                                <label for="languageSelect">Language:</label>
+                                <select id="languageSelect" class="lang-select">
+                                    <option value="English" selected>English</option>
+                                    <option value="Hindi">Hindi (हिंदी)</option>
+                                    <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                                    <option value="Telugu">Telugu (తెలుగు)</option>
+                                    <option value="Tamil">Tamil (தமிழ்)</option>
+                                </select>
+                            </div>
+
+                            <button class="btn btn-primary" id="analyzeSubmitBtn">
+                                <span>Analyze Report</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Interactive 3D Biomarker Canvas -->
+                    <div class="glass-card visualizer-card">
+                        <div class="visualizer-header">
+                            <div class="visualizer-title">
+                                <span class="pulse-dot"></span>
+                                <span>3D Biomarker Helix Visualizer</span>
+                            </div>
+                            <span class="visualizer-tag">WebGL Live</span>
+                        </div>
+                        <div class="visualizer-stage" id="biomarkerStageContainer">
+                            <canvas id="biomarker3DCanvas"></canvas>
+                            <div class="visualizer-overlay-info">
+                                <div class="overlay-stat" id="overlayAnalyteCount">Biomarkers: Ready</div>
+                                <div class="overlay-sub">Hover to rotate molecular structure</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ─── Live Analysis Output & Metrics (Revealed after analysis) ─── -->
+                <div class="analysis-results-wrapper" id="resultsSection" style="display:none">
+                    <!-- Panic Value Banner (Shown only if critical values exist) -->
+                    <div class="critical-alert-banner" id="criticalBanner" style="display:none">
+                        <div class="alert-icon">⚠️</div>
+                        <div class="alert-content">
+                            <h3 class="alert-title">Critical Lab Finding Notice</h3>
+                            <p class="alert-message" id="criticalMessage">One or more values are in a range that usually needs prompt medical attention. Please contact your doctor or hospital today.</p>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Counter Row -->
+                    <div class="metrics-cards-grid">
+                        <div class="metric-card">
+                            <div class="metric-num" id="metricTotalTests">0</div>
+                            <div class="metric-label">Tests Evaluated</div>
+                        </div>
+                        <div class="metric-card metric-abnormal">
+                            <div class="metric-num" id="metricAbnormalFlags">0</div>
+                            <div class="metric-label">Abnormal Flags</div>
+                        </div>
+                        <div class="metric-card metric-critical">
+                            <div class="metric-num" id="metricCriticalCount">0</div>
+                            <div class="metric-label">Critical Alerts</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-num" id="metricTokensUsed">0</div>
+                            <div class="metric-label">Tokens Consumed</div>
+                        </div>
+                    </div>
+
+                    <!-- Flags Table & Explanation Grid -->
+                    <div class="results-detail-grid">
+                        <!-- Left: Flags Table -->
+                        <div class="glass-card results-card">
+                            <div class="card-heading-row">
+                                <h3 class="card-subtitle">Biomarker Evaluations</h3>
+                                <span class="badge-pill">Code Decided</span>
+                            </div>
+                            <div class="table-container">
+                                <table class="flags-table" id="flagsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Test Name</th>
+                                            <th>Your Value</th>
+                                            <th>Standard Range</th>
+                                            <th>Flag</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="flagsTableBody">
+                                        <!-- Rows injected by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Right: Plain-Language Summary -->
+                        <div class="glass-card results-card">
+                            <div class="card-heading-row">
+                                <h3 class="card-subtitle">Plain-Language Explanation</h3>
+                                <span class="badge-pill badge-verified">Verified Safe</span>
+                            </div>
+                            <div class="markdown-explanation" id="explanationText">
+                                <!-- Explanation text rendered by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 SECTION 3: CONVERSATIONAL MEDICAL ASSISTANT CHATBOT
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="content-section" id="chatSection">
+                <div class="section-header">
+                    <span class="section-badge">💬 Step 2 • Interactive Health Q&A</span>
+                    <h2 class="section-title">Chat with MedExplain Assistant</h2>
+                    <p class="section-subtitle">
+                        Ask questions about your report, request dietary and lifestyle suggestions, or prepare for your upcoming doctor's visit.
+                    </p>
+                </div>
+
+                <div class="glass-card chat-interface-card">
+                    <!-- Chat Header -->
+                    <div class="chat-header-bar">
+                        <div class="chat-assistant-meta">
+                            <div class="chat-avatar">✚</div>
+                            <div>
+                                <h3 class="chat-title">MedExplain Companion</h3>
+                                <span class="chat-status-text">Guarded by Deterministic Clinical Thresholds</span>
+                            </div>
+                        </div>
+                        <div class="chat-controls">
+                            <button class="btn btn-sm btn-outline" id="chatClearBtn">Clear Chat</button>
+                        </div>
+                    </div>
+
+                    <!-- Message Stream -->
+                    <div class="chat-messages-container" id="chatMessagesContainer">
+                        <div class="chat-message message-assistant">
+                            <div class="message-avatar">✚</div>
+                            <div class="message-bubble">
+                                <div class="message-content">
+                                    Hello! I am your MedExplain Assistant. Upload a lab report above or ask me any question like <strong>"What's going on with my report?"</strong> or <strong>"What dietary suggestions do you have for my results?"</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Typing Indicator -->
+                    <div class="typing-indicator" id="chatTypingIndicator" style="display:none">
+                        <span></span><span></span><span></span>
+                    </div>
+
+                    <!-- Chat Input Bar -->
+                    <div class="chat-input-bar">
+                        <input type="text" id="chatBarInput" class="chat-input-field" placeholder="Ask a question about your report..." autocomplete="off">
+                        <button class="btn btn-primary chat-send-btn" id="chatBarSendBtn">
+                            <span>Send</span>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════════
+                 SECTION 4: DOCTOR QUESTIONS & LIFESTYLE SUGGESTIONS
+                 ═══════════════════════════════════════════════════════════════ -->
+            <section class="content-section" id="guideSection">
+                <div class="section-header">
+                    <span class="section-badge">🩺 Step 3 • Clinical Collaboration & Habits</span>
+                    <h2 class="section-title">Doctor Discussion & Lifestyle Guidance</h2>
+                    <p class="section-subtitle">
+                        Evidence-based non-clinical suggestions to discuss with your healthcare provider.
+                    </p>
+                </div>
+
+                <div class="guide-grid">
+                    <!-- Doctor Questions Card -->
+                    <div class="glass-card guide-card">
+                        <div class="card-heading-row">
+                            <h3 class="card-subtitle">Questions for Your Doctor</h3>
+                            <span class="badge-pill">Template Based</span>
+                        </div>
+                        <p class="guide-intro">Take these questions to your next appointment to gain clear answers from your physician:</p>
+                        <ul class="doctor-questions-list" id="doctorQuestionsList">
+                            <li>How do these test results compare with my previous baseline health?</li>
+                            <li>Could temporary factors like hydration, exercise, or recent diet have influenced these numbers?</li>
+                            <li>Do you recommend repeating these tests in a few weeks to monitor the trend?</li>
+                            <li>Are there specific lifestyle or nutritional adjustments you advise for my profile?</li>
+                        </ul>
+                    </div>
+
+                    <!-- Lifestyle Guidance Card -->
+                    <div class="glass-card guide-card">
+                        <div class="card-heading-row">
+                            <h3 class="card-subtitle">Healthy Lifestyle Suggestions</h3>
+                            <span class="badge-pill">Evidence Based</span>
+                        </div>
+                        <div class="lifestyle-items" id="lifestyleItemsList">
+                            <div class="lifestyle-item">
+                                <span class="lifestyle-bullet">💧</span>
+                                <div>
+                                    <strong>Consistent Hydration:</strong> Aim for 2 to 2.5 liters of clean water daily to support electrolyte balance and kidney filtration.
+                                </div>
+                            </div>
+                            <div class="lifestyle-item">
+                                <span class="lifestyle-bullet">🥗</span>
+                                <div>
+                                    <strong>Nutrient Density:</strong> Prioritize colorful vegetables, leafy greens, legumes, and quality lean proteins.
+                                </div>
+                            </div>
+                            <div class="lifestyle-item">
+                                <span class="lifestyle-bullet">🚶</span>
+                                <div>
+                                    <strong>Active Movement:</strong> 20–30 minutes of light walking after meals supports natural glucose regulation and cardiovascular tone.
+                                </div>
+                            </div>
+                            <div class="lifestyle-item">
+                                <span class="lifestyle-bullet">😴</span>
+                                <div>
+                                    <strong>Restorative Rest:</strong> 7–8 hours of consistent sleep supports cellular regeneration and endocrine health.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Global Disclaimer -->
+                <div class="safety-disclaimer-card">
+                    <div class="disclaimer-icon">🛡️</div>
+                    <div class="disclaimer-text">
+                        <strong>Important Medical Notice:</strong> MedExplain AI provides educational explanations and never diagnoses medical conditions or prescribes medications or dosages. Always discuss your laboratory test results with your licensed physician.
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Application Script -->
+    <script src="/frontend/js/app.js"></script>
+</body>
+</html>

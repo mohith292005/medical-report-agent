@@ -1,0 +1,47 @@
+{
+  "_note": "These are illustrative educational panic thresholds for laboratory safety checks. They are not intended as clinical diagnostic criteria and require thorough clinical validation by certified medical staff.",
+  "tests": {
+    "hemoglobin": {
+      "canonical_unit": "g/dL",
+      "panic_low": 7.0,
+      "panic_high": 20.0,
+      "urgency_message": "Hemoglobin below 7.0 g/dL is critically low and indicates severe anemia requiring emergency evaluation."
+    },
+    "glucose": {
+      "canonical_unit": "mg/dL",
+      "panic_low": 50.0,
+      "panic_high": 400.0,
+      "urgency_message": "Blood glucose below 50 mg/dL or above 400 mg/dL is acutely dangerous (severe hypoglycemia or marked hyperglycemia)."
+    },
+    "potassium": {
+      "canonical_unit": "mmol/L",
+      "panic_low": 2.5,
+      "panic_high": 6.5,
+      "urgency_message": "Potassium below 2.5 mmol/L or above 6.5 mmol/L can cause fatal cardiac arrhythmias."
+    },
+    "sodium": {
+      "canonical_unit": "mmol/L",
+      "panic_low": 120.0,
+      "panic_high": 160.0,
+      "urgency_message": "Sodium below 120 mmol/L or above 160 mmol/L poses immediate risk of neurological complications or seizure."
+    },
+    "platelets": {
+      "canonical_unit": "/uL",
+      "panic_low": 20000.0,
+      "panic_high": 1000000.0,
+      "urgency_message": "Platelets below 20,000 /uL severely elevate spontaneous bleeding risk."
+    },
+    "wbc": {
+      "canonical_unit": "/uL",
+      "panic_low": 2000.0,
+      "panic_high": 30000.0,
+      "urgency_message": "WBC count below 2,000 /uL or above 30,000 /uL warrants immediate clinical assessment for acute infection or marrow suppression."
+    },
+    "calcium": {
+      "canonical_unit": "mg/dL",
+      "panic_low": 6.5,
+      "panic_high": 13.0,
+      "urgency_message": "Calcium below 6.5 mg/dL or above 13.0 mg/dL can precipitate tetany, cardiac events, or coma."
+    }
+  }
+}

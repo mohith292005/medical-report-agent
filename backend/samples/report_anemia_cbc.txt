@@ -1,0 +1,18 @@
+APEX HEALTH PATHOLOGY SERVICES
+PATIENT REPORT: HEMATOLOGY EVALUATION
+Patient Name: Robert Smith
+Patient ID: APX-99318
+Ordering Physician: Dr. K. Patel
+
+HEMATOLOGY & IRON STUDIES
+Test Name               Result      Unit        Reference Range
+-----------------------------------------------------------------
+Hemoglobin              9.2         g/dL        13.0 - 17.0
+Hematocrit              28.5        %           38.0 - 50.0
+Red Blood Cells (RBC)   3.2         10^6/uL     4.2 - 5.9
+White Blood Cells (WBC) 5800        /uL         4000 - 11000
+Platelet Count          210000      /uL         150000 - 450000
+Serum Ferritin          8.0         ng/mL       20.0 - 250.0
+
+Notes: Microcytic hypochromic red cell indices noted on smear.
+Reviewing Pathologist: Dr. H. Vance, FCAP

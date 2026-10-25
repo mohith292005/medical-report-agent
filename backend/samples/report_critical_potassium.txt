@@ -1,0 +1,17 @@
+ST. JUDE REGIONAL MEDICAL CENTER
+ACUTE CARE LAB REPORT - STAT BIOCHEMISTRY
+Patient Name: Clara Adams
+Patient ID: SJM-449102
+Location: Emergency Observation
+
+METABOLIC & ELECTROLYTE PANEL
+Test Name               Result      Unit        Reference Range
+-----------------------------------------------------------------
+Potassium               6.8         mmol/L      3.5 - 5.0
+Sodium                  138.0       mmol/L      135.0 - 145.0
+Serum Creatinine        1.8         mg/dL       0.6 - 1.2
+Blood Glucose           105.0       mg/dL       70.0 - 99.0
+
+ALERT: Severe hyperkalemia observed. Sample re-tested and verified with repeat run.
+Critical value phoned to clinical care team at 14:10.
+Tech: J. Doe, MT (ASCP)

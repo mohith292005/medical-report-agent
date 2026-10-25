@@ -1,0 +1,32 @@
+{
+  "_note": "Standard adult general laboratory reference ranges used as fallbacks only when the uploaded report provides no reference range.",
+  "ranges": {
+    "hemoglobin": { "low": 13.0, "high": 17.0, "unit": "g/dL", "ref_text": "13.0 - 17.0 g/dL" },
+    "wbc": { "low": 4000.0, "high": 11000.0, "unit": "/uL", "ref_text": "4,000 - 11,000 /uL" },
+    "rbc": { "low": 4.2, "high": 5.9, "unit": "10^6/uL", "ref_text": "4.2 - 5.9 10^6/uL" },
+    "platelets": { "low": 150000.0, "high": 450000.0, "unit": "/uL", "ref_text": "150,000 - 450,000 /uL" },
+    "hematocrit": { "low": 38.0, "high": 50.0, "unit": "%", "ref_text": "38.0 - 50.0 %" },
+    "glucose": { "low": 70.0, "high": 99.0, "unit": "mg/dL", "ref_text": "70 - 99 mg/dL" },
+    "hba1c": { "low": 4.0, "high": 5.6, "unit": "%", "ref_text": "<= 5.6 %" },
+    "creatinine": { "low": 0.6, "high": 1.2, "unit": "mg/dL", "ref_text": "0.6 - 1.2 mg/dL" },
+    "bun": { "low": 7.0, "high": 20.0, "unit": "mg/dL", "ref_text": "7 - 20 mg/dL" },
+    "egfr": { "low": 60.0, "high": 120.0, "unit": "mL/min", "ref_text": "> 60 mL/min" },
+    "total_cholesterol": { "low": null, "high": 200.0, "unit": "mg/dL", "ref_text": "< 200 mg/dL" },
+    "ldl": { "low": null, "high": 100.0, "unit": "mg/dL", "ref_text": "< 100 mg/dL" },
+    "hdl": { "low": 40.0, "high": null, "unit": "mg/dL", "ref_text": "> 40 mg/dL" },
+    "triglycerides": { "low": null, "high": 150.0, "unit": "mg/dL", "ref_text": "< 150 mg/dL" },
+    "potassium": { "low": 3.5, "high": 5.0, "unit": "mmol/L", "ref_text": "3.5 - 5.0 mmol/L" },
+    "sodium": { "low": 135.0, "high": 145.0, "unit": "mmol/L", "ref_text": "135 - 145 mmol/L" },
+    "calcium": { "low": 8.5, "high": 10.2, "unit": "mg/dL", "ref_text": "8.5 - 10.2 mg/dL" },
+    "chloride": { "low": 96.0, "high": 106.0, "unit": "mmol/L", "ref_text": "96 - 106 mmol/L" },
+    "alt": { "low": 7.0, "high": 56.0, "unit": "U/L", "ref_text": "7 - 56 U/L" },
+    "ast": { "low": 10.0, "high": 40.0, "unit": "U/L", "ref_text": "10 - 40 U/L" },
+    "bilirubin": { "low": 0.2, "high": 1.2, "unit": "mg/dL", "ref_text": "0.2 - 1.2 mg/dL" },
+    "alkaline_phosphatase": { "low": 44.0, "high": 147.0, "unit": "U/L", "ref_text": "44 - 147 U/L" },
+    "tsh": { "low": 0.4, "high": 4.0, "unit": "uIU/mL", "ref_text": "0.4 - 4.0 uIU/mL" },
+    "free_t4": { "low": 0.8, "high": 1.8, "unit": "ng/dL", "ref_text": "0.8 - 1.8 ng/dL" },
+    "vitamin_d": { "low": 30.0, "high": 100.0, "unit": "ng/mL", "ref_text": "30 - 100 ng/mL" },
+    "vitamin_b12": { "low": 200.0, "high": 900.0, "unit": "pg/mL", "ref_text": "200 - 900 pg/mL" },
+    "ferritin": { "low": 20.0, "high": 250.0, "unit": "ng/mL", "ref_text": "20 - 250 ng/mL" }
+  }
+}

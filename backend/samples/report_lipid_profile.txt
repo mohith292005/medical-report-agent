@@ -1,0 +1,16 @@
+VALLEY CLINICAL LABORATORIES
+CARDIOVASCULAR RISK PANEL
+Patient Name: David Johnson
+Patient ID: VCL-77102
+Fasting Status: Fasting 12 Hours
+
+FASTING LIPID PANEL
+Test Name               Result      Unit        Reference Range
+-----------------------------------------------------------------
+Total Cholesterol       245.0       mg/dL       < 200.0
+LDL Cholesterol         162.0       mg/dL       < 100.0
+HDL Cholesterol         38.0        mg/dL       > 40.0
+Triglycerides           220.0       mg/dL       < 150.0
+
+Interpretation: Fasting serum specimen clear.
+Lab Specialist: M. Campbell, CLS

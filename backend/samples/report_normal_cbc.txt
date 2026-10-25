@@ -1,0 +1,17 @@
+METROPOLIS DIAGNOSTIC LABORATORIES
+PATIENT REPORT: OUTPATIENT ADULT SCREENING
+Patient Name: Jane Doe
+Patient ID: MET-2024-88412
+Date Collected: 2026-03-15
+
+COMPLETE BLOOD COUNT (CBC) WITH DIFFERENTIAL
+Test Name               Result      Unit        Reference Range
+-----------------------------------------------------------------
+Hemoglobin              14.8        g/dL        13.0 - 17.0
+White Blood Cells (WBC) 6500        /uL         4000 - 11000
+Red Blood Cells (RBC)   4.9         10^6/uL     4.2 - 5.9
+Platelet Count          260000      /uL         150000 - 450000
+Hematocrit              44.0        %           38.0 - 50.0
+
+Status: All parameters verified within standard limits.
+Lab Director: Dr. E. Martinez, MD
